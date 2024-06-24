@@ -238,12 +238,11 @@ public class ChiTietDonHangNhapView extends JFrame {
     }
     
     public Object[][] getProductData() {
-        System.out.println("yes");
-//        DefaultTableModel model = (DefaultTableModel) tableChiTietNhap.getModel();
-        Object[][] data = new Object[modelChiTietDN.getRowCount()][5]; // Số cột là 5 tương ứng với số cột trong bảng ChiTietDonHangView
-        for (int row = 0; row < modelChiTietDN.getRowCount(); row++) {
+        DefaultTableModel model = (DefaultTableModel) tableChiTietNhap.getModel();
+        Object[][] data = new Object[model.getRowCount()][5]; // Số cột là 5 tương ứng với số cột trong bảng ChiTietDonHangView
+        for (int row = 0; row < model.getRowCount(); row++) {
             for (int col = 0; col < 5; col++) { // Lặp qua từng cột
-                data[row][col] = modelChiTietDN.getValueAt(row, col);
+                data[row][col] = model.getValueAt(row, col);
 
             }
         }

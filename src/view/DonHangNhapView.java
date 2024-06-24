@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -40,6 +41,15 @@ public class DonHangNhapView extends JFrame {
 	private int selectedRow;
 	public JTextField customerField;
 	public JTextField dateField;
+	public JButton lastSelectedButton;
+	private JPanel panelDonNhap;
+	private CardLayout cardLayout;
+	private JPanel mainPanel;
+	private OrderForm of = new OrderForm();
+	private TonKhoView tkview = new TonKhoView();
+	private baoCaoView bcView = new baoCaoView();
+	private QuanTriView qtview = new QuanTriView();
+	public JButton donNhapButton;
 
 	/**
 	 * Launch the application.
@@ -64,69 +74,53 @@ public class DonHangNhapView extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(900, 600);
         JPanel contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+//        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(new BorderLayout(0, 0));
 
-        // Create the menu panel with rounded corners
-        RoundedPanel jPanelMenu = new RoundedPanel(50, Color.WHITE);
-        jPanelMenu.setLayout(new BorderLayout(0, 0));
+        
+        // Tạo panel menu với góc bo tròn
+        RoundedPanel jPanelMenu = new RoundedPanel(15, Color.WHITE);
+        jPanelMenu.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5); // Khoảng cách giữa các component
 
-
-        // Add the house icon to the top of the menu panel
+        // Thêm biểu tượng nhà vào đầu panel menu
         JLabel labelHouse = new JLabel();
         labelHouse.setHorizontalAlignment(SwingConstants.CENTER);
-        Image img = new ImageIcon(this.getClass().getResource("/House.png")).getImage();
-        labelHouse.setIcon(new ImageIcon(img));
-        jPanelMenu.add(labelHouse, BorderLayout.NORTH);
-
-        // Create a panel for the menu items
-        JPanel panel = new JPanel();
-        panel.setOpaque(false);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        jPanelMenu.add(panel, BorderLayout.CENTER);
-
-        // Add vertical glue to center the items
-        panel.add(Box.createVerticalGlue());
-
-        // Add menu items to the panel
-        panel.add(createMenuItem("Đơn Hàng", "/icon_DonHang.png"));
-        panel.add(createMenuItem("Tồn Kho", "/icon_TonKho.png"));
-        panel.add(createMenuItem("Nhập/Xuất", "/icon_NhapXuat.png"));
-        panel.add(createMenuItem("Vị Trí Kho", "/icon_ViTri.png", 40, 36)); // Custom width
-        panel.add(createMenuItem("Quản Trị", "/icon_QuanTri.png"));
-        panel.add(createMenuItem("Thống kê", "/icon_ThongKe.png"));
-
-        // Add vertical glue to push items to the center
-        panel.add(Box.createVerticalGlue());
+        Image img = new ImageIcon(getClass().getResource("/House.png")).getImage();
+        labelHouse.setIcon(new ImageIcon(img.getScaledInstance(84, 84, Image.SCALE_SMOOTH)));
         
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = GridBagConstraints.REMAINDER; // Chiếm toàn bộ chiều rộng
+        jPanelMenu.add(labelHouse, gbc);
+
+        // Thêm khoảng cách
+        gbc.gridy++;
+        jPanelMenu.add(Box.createVerticalStrut(20), gbc);
+
+        // Thêm các mục menu vào panel
+        gbc.gridy++;
+        gbc.gridwidth = 1; // Trở lại chiếm một cột
+        donNhapButton = createMenuButton("Đơn Nhập", "DonNhap") ;
+        jPanelMenu.add(donNhapButton, gbc);
+        gbc.gridy++;
+        jPanelMenu.add(createMenuButton("Đơn Xuất", "DonXuat"), gbc);
+        gbc.gridy++;
+        jPanelMenu.add(createMenuButton("Tồn Kho", "TonKho"), gbc);
+        gbc.gridy++;
+        jPanelMenu.add(createMenuButton("Quản Trị", "QuanTri"), gbc);
+        gbc.gridy++;
+        jPanelMenu.add(createMenuButton("Thống kê", "ThongKe"), gbc);
+
         contentPane.add(jPanelMenu, BorderLayout.WEST);
-        
-        
-        
-        // Tạo panel chính với BorderLayout
+
         JPanel panelDonNhap = new JPanel(new BorderLayout());
         
-        
-//        JPanel panelTop = new JPanel(new BorderLayout());
-//        
-//        JPanel panelNhap = new JPanel(new GridLayout(1,6));
-//        
-//        // Tạo các trường nhập liệu
-//        panelNhap.add(new JLabel("Mã đơn hàng:"));
-//        JTextField idOrderField = new JTextField();
-//        panelNhap.add(idOrderField);
-//
-//        panelNhap.add(new JLabel("Tên khách hàng:"));
-//        JTextField customerField = new JTextField();
-//        panelNhap.add(customerField);
-//
-//        panelNhap.add(new JLabel("Ngày nhập hàng :"));
-//        JTextField dateField = new JTextField();
-//        panelNhap.add(dateField);
-        
         JPanel panelNhap = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
+//        GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5); // Khoảng cách giữa các thành phần
 
         // Mã đơn hàng
@@ -166,7 +160,6 @@ public class DonHangNhapView extends JFrame {
         JButton addProduct = new JButton("Thêm sản phẩm");
         JButton viewButton = new JButton("Xem chi tiết");
         JButton deleteButton = new JButton("Xóa đơn");
-
         
         // Thêm các button vào buttonPanel
         buttonPanel.add(createButton);
@@ -236,33 +229,77 @@ public class DonHangNhapView extends JFrame {
         // Tạo JScrollPane và thêm bảng vào đó
         JScrollPane tableScrollPane = new JScrollPane(table);
 
-        // Thêm buttonPanel vào phía trên và tableScrollPane vào giữa của mainPanel
-        JLabel title = new JLabel("Đơn Nhập");
+        // Nội dung chính với CardLayout
+        mainPanel = new JPanel();
+        cardLayout = new CardLayout();
+        mainPanel.setLayout(cardLayout);
+
         panelDonNhap.add(splitPane, BorderLayout.NORTH);
         panelDonNhap.add(tableScrollPane, BorderLayout.CENTER);
         
-        contentPane.add(panelDonNhap, BorderLayout.CENTER);
+        // Tạo các panel khác nhau cho mỗi thẻ
+        mainPanel.add(panelDonNhap, "DonNhap");
+        mainPanel.add(of.getContentPanel(), "DonXuat");
+        mainPanel.add(tkview.contentPane, "TonKho");
+        mainPanel.add(qtview.contentPane, "QuanTri");
+        mainPanel.add(bcView.getContentPanel(), "ThongKe");
+        
+        contentPane.add(mainPanel, BorderLayout.CENTER);
         
         
         
     }
 
-    // Helper method to create menu items
-    private JLabel createMenuItem(String text, String iconPath) {
-        return createMenuItem(text, iconPath, 36, 36); // Default size
+    // Phương thức tạo các nút menu
+    private JButton createMenuButton(String text, String cardName) {
+        JButton button = new JButton(text);
+        button.setHorizontalAlignment(SwingConstants.LEFT);
+        button.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        button.setFocusPainted(false); // Loại bỏ viền khi được chọn
+        button.setContentAreaFilled(false); // Loại bỏ nền mặc định
+        button.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Đặt icon (tùy chọn, có thể bỏ qua nếu không cần)
+        String iconPath = "/icon_" + cardName + ".png";
+        Image img = new ImageIcon(getClass().getResource(iconPath)).getImage();
+        Image scaledImg = img.getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+        button.setIcon(new ImageIcon(scaledImg));
+
+        // Thêm hành động khi nhấp chuột
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Khôi phục màu nền của nút trước đó nếu có
+                if (lastSelectedButton != null && lastSelectedButton != button) {
+                    lastSelectedButton.setBackground(null);
+                    lastSelectedButton.setOpaque(false);
+                }
+
+                // Đặt màu nền cho nút hiện tại
+                button.setBackground(Color.LIGHT_GRAY);
+                button.setOpaque(true);
+
+                // Cập nhật nút được chọn trước đó
+                lastSelectedButton = button;
+
+                // Hiển thị thẻ tương ứng
+                cardLayout.show(mainPanel, cardName);
+            }
+        });
+
+        return button;
     }
 
-    // Overloaded method to allow custom icon size
-    private JLabel createMenuItem(String text, String iconPath, int iconWidth, int iconHeight) {
-        JLabel label = new JLabel(text);
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        Image img = new ImageIcon(this.getClass().getResource(iconPath)).getImage();
-        Image scaledImg = img.getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
-        label.setIcon(new ImageIcon(scaledImg));
-        label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        return label;
-    }
+//    // Phương thức tạo các panel khác nhau
+//    private JPanel createPanel(String text) {
+//        JPanel panel = new JPanel();
+//        panel.setBackground(Color.WHITE);
+//        panel.setLayout(new BorderLayout());
+//        JLabel label = new JLabel(text, SwingConstants.CENTER);
+//        label.setFont(new Font("Tahoma", Font.PLAIN, 24));
+//        panel.add(label, BorderLayout.CENTER);
+//        return panel;
+//    }
     
     public String getSelectIdDH() {
         selectedRow = table.getSelectedRow();
@@ -276,7 +313,7 @@ public class DonHangNhapView extends JFrame {
         }
         return null;
     }
-
+    
     
     private void viewOrderDetails() {
         selectedRow = table.getSelectedRow();
