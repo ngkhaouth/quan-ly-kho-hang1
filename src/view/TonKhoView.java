@@ -40,13 +40,6 @@ public class TonKhoView extends JFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.add(Box.createVerticalGlue());
 
-//        addMenuItem(panel, "Đơn Hàng", "/icon_DonHang.png");
-//        addMenuItem(panel, "Tồn Kho", "/icon_TonKho.png");
-//        addMenuItem(panel, "Nhập/Xuất", "/icon_NhapXuat.png");
-//        addMenuItem(panel, "Vị Trí Kho", "/icon_ViTri.png");
-//        addMenuItem(panel, "Quản Trị", "/icon_QuanTri.png");
-//        addMenuItem(panel, "Thống kê", "/icon_ThongKe.png");
-
         panel.add(Box.createVerticalStrut(10));
         panel.add(Box.createVerticalGlue());
 

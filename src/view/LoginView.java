@@ -100,7 +100,7 @@ public class LoginView extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    DonHangNhapView frame = new DonHangNhapView();
+                    HoaDonNhapView frame = new HoaDonNhapView();
                     frame.donNhapButton.setBackground(Color.LIGHT_GRAY);
                     frame.donNhapButton.setOpaque(true);
                     frame.lastSelectedButton = frame.donNhapButton;

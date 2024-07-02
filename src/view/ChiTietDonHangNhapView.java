@@ -9,6 +9,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,22 +25,29 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import DAO.ChiTietNhapDAO;
+import controller.ChiTietNhapController;
+import controller.HoaDonNhapController;
+import model.ChiTietNhap;
+import model.SanPham;
+
 public class ChiTietDonHangNhapView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-    private String orderId;
+    public String orderId;
     private JTable orderTable;
     private int selectedRow;
-	private DonHangNhapView dhnview;
-	private JTextField idChiTietOrderField;
+//	public HoaDonNhapView hdnview = new HoaDonNhapView();
 	private JTextField idKhoField;
-	private JTextField idProductField;
+	private JTextField productIdField;
 	private JTextField productNameField;
 	private JTextField quantityField;
 	private JTextField costField;
 	private DefaultTableModel modelChiTietDN;
-	private JTable tableChiTietNhap;
+	public JTable tableChiTietNhap;
+	private ChiTietNhapDAO chiTietNhapDAO = new ChiTietNhapDAO();
+	private HoaDonNhapController hoaDonNhapController;
 
 	/**
 	 * Launch the application.
@@ -46,7 +56,7 @@ public class ChiTietDonHangNhapView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-//					ChiTietDonHangNhapView frame = new ChiTietDonHangNhapView("N3");
+//					ChiTietDonHangNhapView frame = new ChiTietDonHangNhapView("N1", , selectedRow);
 //					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,10 +68,11 @@ public class ChiTietDonHangNhapView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ChiTietDonHangNhapView(String orderId, JTable orderTable, int selectedRow) {
+	public ChiTietDonHangNhapView(String orderId, JTable orderTable, int selectedRow, HoaDonNhapController hoaDonNhapController) {
         this.orderId = orderId;
         this.orderTable = orderTable;
         this.selectedRow = selectedRow;
+        this.hoaDonNhapController = hoaDonNhapController ;
         
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(750, 450);
@@ -78,62 +89,53 @@ public class ChiTietDonHangNhapView extends JFrame {
         // Mã đơn hàng
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panelNhap.add(new JLabel("Mã chi tiết đơn hàng:"), gbc);
+        panelNhap.add(new JLabel("Mã sản phẩm:"), gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL; // Để các JTextField mở rộng theo chiều ngang
-        idChiTietOrderField = new JTextField(15);
-        idChiTietOrderField.setEditable(false); // Đặt thành chỉ đọc
-        idChiTietOrderField.setBackground(Color.LIGHT_GRAY); // Tùy chọn: thay đổi nền để chỉ ra rằng nó là trường chỉ đọc
-        panelNhap.add(idChiTietOrderField, gbc);
+        productIdField = new JTextField(15);
+        panelNhap.add(productIdField, gbc);
         
         
         gbc.gridx = 2;
         gbc.gridy = 0;
-        panelNhap.add(new JLabel("Mã kho:"), gbc);
+        panelNhap.add(new JLabel("Số lượng:"), gbc);
 
         gbc.gridx = 3;
         gbc.gridy = 0;
-        idKhoField = new JTextField(15);
-        panelNhap.add(idKhoField, gbc);
+        quantityField = new JTextField(15);
+        panelNhap.add(quantityField, gbc);
+        
         
         gbc.gridx = 0;
         gbc.gridy = 1;
-        panelNhap.add(new JLabel("Mã sản phẩm:"), gbc);
+        panelNhap.add(new JLabel("Tên sản phẩm:"), gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 1;
-        idProductField = new JTextField(15);
-        panelNhap.add(idProductField, gbc);
-
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        panelNhap.add(new JLabel("Tên sản phẩm: "), gbc);
-
-        gbc.gridx = 3;
         gbc.gridy = 1;
         productNameField = new JTextField(15);
         panelNhap.add(productNameField, gbc);
         
+
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        panelNhap.add(new JLabel("Đơn giá: "), gbc);
+
+        gbc.gridx = 3;
+        gbc.gridy = 1;
+        costField = new JTextField(15);
+        panelNhap.add(costField, gbc);
+        
         gbc.gridx = 0;
         gbc.gridy = 2;
-        panelNhap.add(new JLabel("Số lượng:"), gbc);
+        panelNhap.add(new JLabel("Mã kho:"), gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 2;
-        quantityField = new JTextField(15);
-        panelNhap.add(quantityField, gbc);
-		
-        gbc.gridx = 2;
-        gbc.gridy = 2;
-        panelNhap.add(new JLabel("Đơn giá:"), gbc);
+        idKhoField = new JTextField(15);
+        panelNhap.add(idKhoField, gbc);
 
-        gbc.gridx = 3;
-        gbc.gridy = 2;
-        costField = new JTextField(15);
-        
-        panelNhap.add(costField, gbc);
         
         // Tạo panel cho các button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
@@ -149,6 +151,7 @@ public class ChiTietDonHangNhapView extends JFrame {
         
         // Tạo model và table
         modelChiTietDN = new DefaultTableModel();
+        modelChiTietDN.addColumn("Mã chi tiết hóa đơn");
         modelChiTietDN.addColumn("Mã sản phẩm");
         modelChiTietDN.addColumn("Tên sản phẩm");
         modelChiTietDN.addColumn("Mã kho");
@@ -168,8 +171,8 @@ public class ChiTietDonHangNhapView extends JFrame {
 		setContentPane(contentPane);
 		
 		
-    	// Đặt mã chi tiết đơn hàng
-    	setOrderDetailCode(orderId);
+//    	// Đặt mã chi tiết đơn hàng
+//    	setOrderDetailCode(orderId);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
@@ -177,45 +180,126 @@ public class ChiTietDonHangNhapView extends JFrame {
         addProductButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	
+            	   // Lấy mã chi tiết nhập hiện tại lớn nhất từ cơ sở dữ liệu
+                String currentMaxMaChiTietNhap;
+                try {
+                    currentMaxMaChiTietNhap = chiTietNhapDAO.getMaxMaChiTietNhap();
+                } catch (SQLException el) {
+                    el.printStackTrace();
+                    System.out.println("Lỗi khi lấy mã chi tiết nhập lớn nhất: " + el.getMessage());
+                    return;
+                }
+                
+                // Tập hợp các mã chi tiết nhập hiện có trong JTable
+                Set<String> existingIds = new HashSet<>();
+                for (int i = 0; i < modelChiTietDN.getRowCount(); i++) {
+                    existingIds.add((String) modelChiTietDN.getValueAt(i, 0));
+                }
+
+                // Tạo mã chi tiết nhập mới
+                String maChiTietNhap = generateUniqueMaChiTietNhap(currentMaxMaChiTietNhap, existingIds);
+                
                 // Get data from fields
-                String idProduct = idProductField.getText();
+                String idProduct = productIdField.getText();
                 String productName = productNameField.getText();
                 String idKho = idKhoField.getText();
                 String quantity = quantityField.getText();
                 String cost = costField.getText();
 
                 // Validate data (optional, you can add more checks)
-                if (idProduct.isEmpty() || productName.isEmpty() || idKho.isEmpty() || quantity.isEmpty() || cost.isEmpty()) {
+                if (maChiTietNhap.isEmpty() || idProduct.isEmpty() || productName.isEmpty() || idKho.isEmpty() || quantity.isEmpty() || cost.isEmpty()) {
                     JOptionPane.showMessageDialog(ChiTietDonHangNhapView.this, "Please fill in all fields.");
                     return;
                 }
+                
+                try {
+                    int quantityInt = Integer.parseInt(quantity);
+                    double costDouble = Double.parseDouble(cost);
+
+                    if (quantityInt < 0) {
+                        JOptionPane.showMessageDialog(ChiTietDonHangNhapView.this, "Số lượng không thể âm.", "Lỗi dữ liệu", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    if (costDouble < 0) {
+                        JOptionPane.showMessageDialog(ChiTietDonHangNhapView.this, "Giá nhập không thể âm.", "Lỗi dữ liệu", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
 
                 // Add data to the table model
-                modelChiTietDN.addRow(new Object[]{idProduct, productName, idKho, quantity, cost});
+                modelChiTietDN.addRow(new Object[]{maChiTietNhap, idProduct, productName, idKho, quantity, cost});
 
                 // Clear fields for new input
-                idProductField.setText("");
+                productIdField.setText("");
                 productNameField.setText("");
                 idKhoField.setText("");
                 quantityField.setText("");
                 costField.setText("");
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(ChiTietDonHangNhapView.this, "Vui lòng nhập số hợp lệ cho số lượng và giá nhập.", "Lỗi dữ liệu", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                confirmTotal();
+            	
+                ChiTietNhapController chiTietNhapController = new ChiTietNhapController(ChiTietDonHangNhapView.this, hoaDonNhapController);
+                DefaultTableModel model = (DefaultTableModel) tableChiTietNhap.getModel();
+
+                try {
+                    chiTietNhapController.processChiTietNhap(model, orderId);
+                    System.out.println("Cập nhật dữ liệu chi tiết hóa đơn thành công.");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                try {
+					chiTietNhapController.tinhTong();
+					System.out.println("Cập nhật dữ liệu tổng tiền thành công.");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+                dispose();
             }
         });
 	}
 
-	private void setOrderDetailCode(String idOrder) {
-	    // Đặt mã chi tiết đơn hàng dựa vào mã đơn hàng
-	    // Ví dụ: mã chi tiết đơn hàng = "1" nếu orderCode là "N1", "2" nếu orderCode là "N2", ...
-	    String orderDetailCode = idOrder.replace("N", "");
-	    idChiTietOrderField.setText(orderDetailCode);
-	}
+    public static String generateNewMaChiTietNhap(String currentMaxMaChiTietNhap) {
+        if (currentMaxMaChiTietNhap == null) {
+            return "C01"; // Trường hợp không có mã chi tiết nhập nào
+        }
+
+        // Tách phần số ra khỏi mã chi tiết nhập hiện tại
+        String prefix = currentMaxMaChiTietNhap.substring(0, 1); // "C"
+        String numberPart = currentMaxMaChiTietNhap.substring(1); // "01"
+
+        // Tăng phần số
+        int number = Integer.parseInt(numberPart);
+        number++;
+
+        // Định dạng lại phần số với độ dài 2 chữ số, ví dụ: "02", "03"
+        return prefix + String.format("%02d", number);
+    }
+    
+    public static String generateUniqueMaChiTietNhap(String currentMaxMaChiTietNhap, Set<String> existingIds) {
+        if (currentMaxMaChiTietNhap == null) {
+            currentMaxMaChiTietNhap = "C00"; // Trường hợp không có mã chi tiết nhập nào, bắt đầu từ "C00"
+        }
+
+        String newMaChiTietNhap;
+        int counter = 0;
+
+        do {
+            newMaChiTietNhap = generateNewMaChiTietNhap(currentMaxMaChiTietNhap);
+            currentMaxMaChiTietNhap = newMaChiTietNhap; // Cập nhật mã chi tiết nhập hiện tại để tăng tiếp
+            counter++;
+        } while (existingIds.contains(newMaChiTietNhap) && counter <= 999); // Giới hạn kiểm tra để tránh vòng lặp vô tận
+
+        return newMaChiTietNhap;
+    }
 	
     private void confirmTotal() {
         try {
@@ -230,8 +314,7 @@ public class ChiTietDonHangNhapView extends JFrame {
             if (selectedRow != -1) {
                 orderTable.setValueAt(totalAmount, selectedRow, 3); // Cập nhật cột tổng tiền
             }
-            // Đóng cửa sổ chi tiết đơn hàng
-            dispose();
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi tính tổng số tiền.");
         }

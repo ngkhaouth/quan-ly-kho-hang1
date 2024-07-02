@@ -1,59 +1,53 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import model.Order;
+import model.OrderDetail;
 
 public class OrderForm extends JFrame {
 
-	 private JTextField Field_MaHoaDon;
-	 private JTextField Field_TenKhachHang;
-	 private JTextField Field_NgayXuat;
-	 private JTextField Field_TongTien;
-	 private JButton Button_TaoHoaDon;
-	 private JButton Button_ThemSanPham;
-	 private JButton Button_ChiTietHD;
-	 private JButton Button_HuyHD;
-	 private JTable orderTable;
-	 private DefaultTableModel tableModel;
+    private JTextField Field_MaHoaDon;
+    private JTextField Field_TenKhachHang;
+    private JTextField Field_NgayXuat;
+    private JTextField Field_TongTien;
+    private JButton Button_TaoHoaDon;
+    private JButton Button_ThemSanPham;
+    private JButton Button_ChiTietHD;
+    private JButton Button_HuyHD;
+    private JTable orderTable;
+    private DefaultTableModel tableModel;
+    private Map<String, ProductForm> chiTietHoaDonMap;
+    private Map<String, Order> hoaDonMap;
+    private int hoaDonCounter;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					OrderForm frame = new OrderForm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                OrderForm frame = new OrderForm();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
-	/**
-	 * Create the frame.
-	 */
-	public OrderForm() {
-		setTitle("Quản lý đơn xuất hàng");
+    public OrderForm() {
+        this.chiTietHoaDonMap = new HashMap<>();
+        this.hoaDonMap = new HashMap<>();
+        this.hoaDonCounter = 1;
+
+        setTitle("Quản lý đơn xuất hàng");
         getContentPane().setLayout(new BorderLayout());
 
         JPanel formPanel = new JPanel(new GridLayout(5, 2));
-
         Field_MaHoaDon = new JTextField();
         Field_TenKhachHang = new JTextField();
         Field_NgayXuat = new JTextField();
@@ -94,50 +88,157 @@ public class OrderForm extends JFrame {
 
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Add action listeners
+        Button_TaoHoaDon.addActionListener(e -> createOrder());
+        Button_ThemSanPham.addActionListener(e -> showProductForm());
+        Button_ChiTietHD.addActionListener(e -> viewOrderDetails());
+        Button_HuyHD.addActionListener(e -> deleteOrder());
     }
 
-    public JTextField getMaHoaDon() {
-        return Field_MaHoaDon;
+    private void createOrder() {
+        String orderId = Field_MaHoaDon.getText();
+        String customerName = Field_TenKhachHang.getText();
+        String exportDateString = Field_NgayXuat.getText();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date exportDate;
+
+        try {
+            exportDate = dateFormat.parse(exportDateString);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Sai định dạng ngày xuất. Hãy nhập đúng định dạng dd/MM/yyyy.");
+            return;
+        }
+
+        String detailId = String.valueOf(hoaDonCounter);
+        hoaDonCounter++;
+
+        Order order = new Order(orderId, customerName, exportDate, detailId);
+        hoaDonMap.put(orderId, order);
+        tableModel.addRow(new Object[]{orderId, customerName, dateFormat.format(exportDate), 0.0});
+        ProductForm productForm = new ProductForm();
+        chiTietHoaDonMap.put(orderId, productForm);
+
+        productForm.get_Button_themSanPham().addActionListener(e -> addProduct(productForm));
+        productForm.getButton_xacNhanDon().addActionListener(e -> confirmOrder(productForm));
+
+        JOptionPane.showMessageDialog(this, "Tạo hóa đơn thành công");
+        resetOrderFormFields();
     }
 
-    public JTextField getTenKhachHang() {
-        return Field_TenKhachHang;
+    private void showProductForm() {
+        int selectedRow = orderTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Hãy chọn 1 hóa đơn để thêm sản phẩm");
+            return;
+        }
+
+        String orderId = (String) tableModel.getValueAt(selectedRow, 0);
+        ProductForm productForm = chiTietHoaDonMap.get(orderId);
+        Order order = hoaDonMap.get(orderId);
+
+        productForm.setChiTietHoaDon(orderId, order.getMaChiTietDonHang());
+        productForm.setVisible(true);
     }
 
-    public JTextField getNgayXuat() {
-        return Field_NgayXuat;
+    private void addProduct(ProductForm productForm) {
+        String orderId = productForm.get_Field_maHoaDon().getText();
+        Order order = hoaDonMap.get(orderId);
+
+        if (order == null) {
+            JOptionPane.showMessageDialog(productForm, "Tạo một đơn hàng để thêm sản phẩm");
+            return;
+        }
+
+        String detailId = productForm.get_Field_maChiTietDonHang().getText();
+        String productId = productForm.get_Field_maSanPham().getText();
+        String productName = productForm.get_Field_tenSanPham().getText();
+        int quantity = Integer.parseInt(productForm.get_Field_soLuong().getText());
+        double price = Double.parseDouble(productForm.get_Field_gia().getText());
+
+        OrderDetail orderDetail = new OrderDetail(detailId, productId, productName, quantity, price);
+        order.themChiTietHD(orderDetail);
+        productForm.getTableModel().addRow(new Object[]{detailId, productId, productName, quantity, price});
+
+        resetProductFormFields(productForm);
     }
 
-    public JTextField getTongTien() {
-        return Field_TongTien;
+    private void confirmOrder(ProductForm productForm) {
+        String orderId = productForm.get_Field_maHoaDon().getText();
+        Order order = hoaDonMap.get(orderId);
+        if (order == null) {
+            JOptionPane.showMessageDialog(productForm, "Không tìm thấy hóa đơn");
+            return;
+        }
+
+        order.TinhToanTongTien();
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            if (tableModel.getValueAt(i, 0).equals(orderId)) {
+                tableModel.setValueAt(order.getTongTien(), i, 3);
+                break;
+            }
+        }
+
+        JOptionPane.showMessageDialog(productForm, "Hóa đơn được xác nhận thành công");
+        productForm.setVisible(false);
     }
 
-    public JButton getButton_TaoHoaDon() {
-        return Button_TaoHoaDon;
+    private void viewOrderDetails() {
+        int selectedRow = orderTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Chọn một hóa đơn để xem chi tiết");
+            return;
+        }
+
+        String orderId = (String) tableModel.getValueAt(selectedRow, 0);
+        Order order = hoaDonMap.get(orderId);
+        ProductForm productForm = chiTietHoaDonMap.get(orderId);
+
+        if (order == null || productForm == null) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy chi tiết đơn hàng");
+            return;
+        }
+
+        DefaultTableModel productTableModel = productForm.getTableModel();
+        productTableModel.setRowCount(0);  // Clear existing rows
+        for (OrderDetail detail : order.getChiTietHoaDon()) {
+            productTableModel.addRow(new Object[]{
+                detail.getmaChiTietDonHang(),
+                detail.getmaSanPham(),
+                detail.gettenSanPham(),
+                detail.getsoLuong(),
+                detail.getgiaSanPham()
+            });
+        }
+
+        productForm.setVisible(true);
     }
 
-    public JButton get_Button_ThemSanPham() {
-        return Button_ThemSanPham;
+    private void deleteOrder() {
+        int selectedRow = orderTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Chọn một hóa đơn để xóa");
+            return;
+        }
+
+        String orderId = (String) tableModel.getValueAt(selectedRow, 0);
+        hoaDonMap.remove(orderId);
+        chiTietHoaDonMap.remove(orderId);
+        tableModel.removeRow(selectedRow);
+        JOptionPane.showMessageDialog(this, "Hóa đơn được xóa thành công");
     }
 
-    public JButton get_Button_XemChiTiet() {
-        return Button_ChiTietHD;
+    private void resetOrderFormFields() {
+        Field_MaHoaDon.setText("");
+        Field_TenKhachHang.setText("");
+        Field_NgayXuat.setText("");
     }
 
-    public JButton get_Button_HuyDon() {
-        return Button_HuyHD;
-    }
-
-    public DefaultTableModel getTableModel() {
-        return (DefaultTableModel) orderTable.getModel();
-    }
-
-    public JTable getOrderTable() {
-        return orderTable;
-    }
-    
-    // Phương thức để lấy content pane
-    public Container getContentPanel() {
-        return getContentPane();
+    private void resetProductFormFields(ProductForm productForm) {
+        productForm.get_Field_maSanPham().setText("");
+        productForm.get_Field_tenSanPham().setText("");
+        productForm.get_Field_soLuong().setText("");
+        productForm.get_Field_gia().setText("");
     }
 }

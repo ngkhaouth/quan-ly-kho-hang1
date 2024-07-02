@@ -8,15 +8,17 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,7 +33,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class DonHangNhapView extends JFrame {
+import DAO.HoaDonNhapDAO;
+import controller.HoaDonNhapController;
+import model.HoaDonNhap;
+
+public class HoaDonNhapView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -39,7 +45,7 @@ public class DonHangNhapView extends JFrame {
 	public JTextField idOrderField;
 	private JTable table;
 	private int selectedRow;
-	public JTextField customerField;
+	public JTextField nhaCungCapField;
 	public JTextField dateField;
 	public JButton lastSelectedButton;
 	private JPanel panelDonNhap;
@@ -50,15 +56,15 @@ public class DonHangNhapView extends JFrame {
 	private baoCaoView bcView = new baoCaoView();
 	private QuanTriView qtview = new QuanTriView();
 	public JButton donNhapButton;
+	private HoaDonNhapDAO hoaDonNhapDAO = new HoaDonNhapDAO();
+	private HoaDonNhapController hoaDonNhapController;
 
-	/**
-	 * Launch the application.
-	 */
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DonHangNhapView frame = new DonHangNhapView();
+					HoaDonNhapView frame = new HoaDonNhapView();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -67,10 +73,11 @@ public class DonHangNhapView extends JFrame {
 		});
 	}
 
+
 	/**
 	 * Create the frame.
 	 */
-	public DonHangNhapView() {
+	public HoaDonNhapView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(900, 600);
         JPanel contentPane = new JPanel();
@@ -137,12 +144,12 @@ public class DonHangNhapView extends JFrame {
         // Tên khách hàng
         gbc.gridx = 2;
         gbc.gridy = 0;
-        panelNhap.add(new JLabel("Tên khách hàng:"), gbc);
+        panelNhap.add(new JLabel("Tên nhà cung cấp:"), gbc);
 
         gbc.gridx = 3;
         gbc.gridy = 0;
-        customerField = new JTextField(15);
-        panelNhap.add(customerField, gbc);
+        nhaCungCapField = new JTextField(15);
+        panelNhap.add(nhaCungCapField, gbc);
 
         // Ngày nhập hàng
         gbc.gridx = 0;
@@ -167,27 +174,84 @@ public class DonHangNhapView extends JFrame {
         buttonPanel.add(viewButton);
         buttonPanel.add(deleteButton);
         
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, panelNhap, buttonPanel);
+        
+        
+        // Tạo model và table
+        tableModel = new DefaultTableModel();
+        tableModel.addColumn("Mã đơn hàng");
+        tableModel.addColumn("Tên nhà cung cấp");
+        tableModel.addColumn("Ngày nhập hàng");
+        tableModel.addColumn("Thành tiền");
+        
+        table = new JTable(tableModel);
+        
+        HoaDonNhapController hoaDonNhapController = new HoaDonNhapController(hoaDonNhapDAO, table, this);
+        
+        hoaDonNhapController.loadHoaDonNhapToTable();
+
+        // Tạo JScrollPane và thêm bảng vào đó
+        JScrollPane tableScrollPane = new JScrollPane(table);
+
+        // Nội dung chính với CardLayout
+        mainPanel = new JPanel();
+        cardLayout = new CardLayout();
+        mainPanel.setLayout(cardLayout);
+
+        panelDonNhap.add(splitPane, BorderLayout.NORTH);
+        panelDonNhap.add(tableScrollPane, BorderLayout.CENTER);
+        
+        // Tạo các panel khác nhau cho mỗi thẻ
+        mainPanel.add(panelDonNhap, "DonNhap");
+        mainPanel.add(of.getContentPane(), "DonXuat");
+        mainPanel.add(tkview.contentPane, "TonKho");
+        mainPanel.add(qtview.contentPane, "QuanTri");
+        mainPanel.add(bcView.getContentPanel(), "ThongKe");
+        
+        contentPane.add(mainPanel, BorderLayout.CENTER);
+        
+        
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String orderCode = idOrderField.getText();
-                String customerName = customerField.getText();
+                String nhaCungCapName = nhaCungCapField.getText();
                 String orderDate = dateField.getText();
-                double totalAmount = 0.0; // Tổng tiền mặc định là 0
+                Double totalAmount = 0.0; // Tổng tiền mặc định là 0
 
                 // Kiểm tra dữ liệu nhập liệu
-                if (orderCode.isEmpty() || customerName.isEmpty() || orderDate.isEmpty()) {
-                    JOptionPane.showMessageDialog(DonHangNhapView.this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    // Thêm dữ liệu vào bảng
-                	tableModel.addRow(new Object[]{orderCode, customerName, orderDate, totalAmount});
-
-                    // Xóa dữ liệu trong các trường sau khi thêm
-                	idOrderField.setText("");
-                	customerField.setText("");
-                	dateField.setText("");
+                if (orderCode.isEmpty() || nhaCungCapName.isEmpty() || orderDate.isEmpty()) {
+                    JOptionPane.showMessageDialog(HoaDonNhapView.this, "Vui lòng nhập đầy đủ thông tin.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
+                // Check if MaHoaDon is unique
+                if (hoaDonNhapDAO.checkMaHoaDonExists(orderCode)) {
+                    JOptionPane.showMessageDialog(HoaDonNhapView.this, "Mã hóa đơn đã tồn tại trong cơ sở dữ liệu.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Check date format and validity
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                dateFormat.setLenient(false);
+                Date date = null;
+                try {
+                    date = dateFormat.parse(orderDate);
+                } catch (ParseException el) {
+                    JOptionPane.showMessageDialog(HoaDonNhapView.this, "Ngày nhập không hợp lệ hoặc không đúng định dạng (dd/MM/yyyy).", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                // Thêm dữ liệu vào bảng
+            	tableModel.addRow(new Object[]{orderCode, nhaCungCapName, orderDate, totalAmount});
+            	
+                // Xóa dữ liệu trong các trường sau khi thêm
+            	idOrderField.setText("");
+            	nhaCungCapField.setText("");
+            	dateField.setText("");
+            	
+            	hoaDonNhapController.addHoaDonNhapFromTable();
             }
+           
         });
         
         // Thêm sự kiện lắng nghe cho nút
@@ -196,7 +260,7 @@ public class DonHangNhapView extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String orderId = getSelectIdDH();
                 if (orderId != null) {
-                    ChiTietDonHangNhapView chiTietView = new ChiTietDonHangNhapView(orderId, table, selectedRow);
+                    ChiTietDonHangNhapView chiTietView = new ChiTietDonHangNhapView(orderId, table, selectedRow, hoaDonNhapController);
                     chiTietView.setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(null, "Vui lòng chọn một đơn hàng trước.");
@@ -214,40 +278,7 @@ public class DonHangNhapView extends JFrame {
             }
         });
         
-        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, panelNhap, buttonPanel);
-        
-        
-        // Tạo model và table
-        tableModel = new DefaultTableModel();
-        tableModel.addColumn("Mã đơn hàng");
-        tableModel.addColumn("Tên nhà cung cấp");
-        tableModel.addColumn("Ngày nhập hàng");
-        tableModel.addColumn("Thành tiền");
 
-        table = new JTable(tableModel);
-
-        // Tạo JScrollPane và thêm bảng vào đó
-        JScrollPane tableScrollPane = new JScrollPane(table);
-
-        // Nội dung chính với CardLayout
-        mainPanel = new JPanel();
-        cardLayout = new CardLayout();
-        mainPanel.setLayout(cardLayout);
-
-        panelDonNhap.add(splitPane, BorderLayout.NORTH);
-        panelDonNhap.add(tableScrollPane, BorderLayout.CENTER);
-        
-        // Tạo các panel khác nhau cho mỗi thẻ
-        mainPanel.add(panelDonNhap, "DonNhap");
-        mainPanel.add(of.getContentPanel(), "DonXuat");
-        mainPanel.add(tkview.contentPane, "TonKho");
-        mainPanel.add(qtview.contentPane, "QuanTri");
-        mainPanel.add(bcView.getContentPanel(), "ThongKe");
-        
-        contentPane.add(mainPanel, BorderLayout.CENTER);
-        
-        
-        
     }
 
     // Phương thức tạo các nút menu
@@ -314,24 +345,35 @@ public class DonHangNhapView extends JFrame {
         return null;
     }
     
-    
     private void viewOrderDetails() {
         selectedRow = table.getSelectedRow();
         if (selectedRow != -1) {
             String orderId = (String) table.getValueAt(selectedRow, 0);
-            String customerName = (String) table.getValueAt(selectedRow, 1);
-            String orderDate = (String) table.getValueAt(selectedRow, 2);
-            String totalPrice = String.valueOf(table.getValueAt(selectedRow, 3));
-            
-            // Lấy dữ liệu sản phẩm từ ChiTietDonHangNhapView
-            ChiTietDonHangNhapView chiTietNhapView = new ChiTietDonHangNhapView(orderId, table, selectedRow);
-            Object[][] productData = chiTietNhapView.getProductData();
-            
-            XemChiTietDonHangNhapView chiTietView = new XemChiTietDonHangNhapView(orderId, customerName, orderDate, totalPrice, productData);
+            XemChiTietDonHangNhapView chiTietView = new XemChiTietDonHangNhapView(orderId);
             chiTietView.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn một đơn hàng để xem chi tiết.");
         }
     }
+    
+    public void showHoaDonNhapList(List<HoaDonNhap> listHoaDonNhap) {
+        tableModel.setRowCount(0); // Xóa các hàng cũ nếu có
+        for (HoaDonNhap hoaDonNhap : listHoaDonNhap) {
+        	String formattedDate = formatDate(hoaDonNhap.getNgayNhap());
+            tableModel.addRow(new Object[]{
+                hoaDonNhap.getMaHoaDon(),
+                hoaDonNhap.getTenNhaCungCap(),
+                formattedDate,
+                hoaDonNhap.getTongTien()
+            });
+        }
+    }
 
+    public String formatDate(Date date) {
+        if (date == null) {
+            return "N/A"; // or another placeholder
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(date);
+    }
 }
