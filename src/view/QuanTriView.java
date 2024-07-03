@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.EventQueue;
+
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.JFrame;
@@ -42,8 +43,7 @@ import javax.swing.SwingConstants;
 import javax.swing.*;
 import java.util.Map;
 import java.util.HashMap;
-//Import thư viện JDBC của MySQL
-//import com.mysql.cj.jdbc.Driver;
+import com.mysql.cj.jdbc.Driver;
 import java.awt.SystemColor;
 import java.util.Arrays;
 import javax.swing.*;
@@ -96,79 +96,60 @@ public class QuanTriView extends JFrame {
         contentPane.setLayout(new BorderLayout());
         setContentPane(contentPane);
 
-        RoundedPanel jPanelMenu = new RoundedPanel(50, Color.WHITE);
-//        contentPane.add(jPanelMenu, BorderLayout.WEST);
-        jPanelMenu.setLayout(new BorderLayout());
-
-        JLabel labelHouse = new JLabel("");
-        labelHouse.setHorizontalAlignment(SwingConstants.CENTER);
-//        Image img = new ImageIcon(getClass().getResource("/img/House.png")).getImage();
-//        labelHouse.setIcon(new ImageIcon(img));
-        jPanelMenu.add(labelHouse, BorderLayout.NORTH);
-
-        JPanel panel = new JPanel();
-        panel.setOpaque(false);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.add(Box.createVerticalGlue());
-
-        JLabel labelDH = new JLabel("Đơn Hàng");
-        labelDH.setHorizontalAlignment(SwingConstants.CENTER);
-        labelDH.setFont(new Font("Tahoma", Font.PLAIN, 16));
-//        Image imgDH = new ImageIcon(getClass().getResource("/img/icon_DonHang.png")).getImage();
-//        Image scaledImgDH = imgDH.getScaledInstance(36, 36, Image.SCALE_SMOOTH);
-//        labelDH.setIcon(new ImageIcon(scaledImgDH));
-        labelDH.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.add(labelDH);
-
-        JLabel labelTK = new JLabel("Tồn Kho");
-        labelTK.setHorizontalAlignment(SwingConstants.CENTER);
-        labelTK.setFont(new Font("Tahoma", Font.PLAIN, 16));
-//        Image imgTK = new ImageIcon(getClass().getResource("/img/icon_TonKho.png")).getImage();
-//        Image scaledImgTK = imgTK.getScaledInstance(36, 36, Image.SCALE_SMOOTH);
-//        labelTK.setIcon(new ImageIcon(scaledImgTK));
-        labelTK.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.add(labelTK);
-
-        JLabel labelNX = new JLabel("Nhập/Xuất");
-        labelNX.setHorizontalAlignment(SwingConstants.CENTER);
-        labelNX.setFont(new Font("Tahoma", Font.PLAIN, 16));
-//        Image imgNX = new ImageIcon(getClass().getResource("/img/icon_NhapXuat.png")).getImage();
-//        Image scaledImgNX = imgNX.getScaledInstance(36, 36, Image.SCALE_SMOOTH);
-//        labelNX.setIcon(new ImageIcon(scaledImgNX));
-        labelNX.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.add(labelNX);
-
-        JLabel labelVT = new JLabel("Vị Trí Kho");
-        labelVT.setHorizontalAlignment(SwingConstants.CENTER);
-        labelVT.setFont(new Font("Tahoma", Font.PLAIN, 16));
-//        Image imgVT = new ImageIcon(getClass().getResource("/img/icon_ViTri.png")).getImage();
-//        Image scaledImgVT = imgVT.getScaledInstance(40, 36, Image.SCALE_SMOOTH);
-//        labelVT.setIcon(new ImageIcon(scaledImgVT));
-        labelVT.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.add(labelVT);
-
-        JLabel labelQT = new JLabel("Quản Trị");
-        labelQT.setHorizontalAlignment(SwingConstants.CENTER);
-        labelQT.setFont(new Font("Tahoma", Font.PLAIN, 16));
-//        Image imgQT = new ImageIcon(getClass().getResource("/img/icon_QuanTri.png")).getImage();
-//        Image scaledImgQT = imgQT.getScaledInstance(36, 36, Image.SCALE_SMOOTH);
-//        labelQT.setIcon(new ImageIcon(scaledImgQT));
-        labelQT.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.add(labelQT);
-
-        JLabel labelTKe = new JLabel("Thống kê");
-        labelTKe.setHorizontalAlignment(SwingConstants.CENTER);
-        labelTKe.setFont(new Font("Tahoma", Font.PLAIN, 16));
-//        Image imgTKe = new ImageIcon(getClass().getResource("/img/icon_ThongKe.png")).getImage();
-//        Image scaledImgTKe = imgTKe.getScaledInstance(36, 36, Image.SCALE_SMOOTH);
-//        labelTKe.setIcon(new ImageIcon(scaledImgTKe));
-        labelTKe.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panel.add(labelTKe);
-
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(Box.createVerticalGlue());
-
-        jPanelMenu.add(panel, BorderLayout.CENTER);
+//        RoundedPanel jPanelMenu = new RoundedPanel(50, Color.WHITE);
+//        jPanelMenu.setLayout(new BorderLayout());
+//
+//        JLabel labelHouse = new JLabel("");
+//        labelHouse.setHorizontalAlignment(SwingConstants.CENTER);
+//        jPanelMenu.add(labelHouse, BorderLayout.NORTH);
+//
+//        JPanel panel = new JPanel();
+//        panel.setOpaque(false);
+//        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+//        panel.add(Box.createVerticalGlue());
+//
+//        JLabel labelDH = new JLabel("Đơn Hàng");
+//        labelDH.setHorizontalAlignment(SwingConstants.CENTER);
+//        labelDH.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//
+//        labelDH.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+//        panel.add(labelDH);
+//
+//        JLabel labelTK = new JLabel("Tồn Kho");
+//        labelTK.setHorizontalAlignment(SwingConstants.CENTER);
+//        labelTK.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//
+//        labelTK.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+//        panel.add(labelTK);
+//
+//        JLabel labelNX = new JLabel("Nhập/Xuất");
+//        labelNX.setHorizontalAlignment(SwingConstants.CENTER);
+//        labelNX.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//        labelNX.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+//        panel.add(labelNX);
+//
+//        JLabel labelVT = new JLabel("Vị Trí Kho");
+//        labelVT.setHorizontalAlignment(SwingConstants.CENTER);
+//        labelVT.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//        labelVT.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+//        panel.add(labelVT);
+//
+//        JLabel labelQT = new JLabel("Quản Trị");
+//        labelQT.setHorizontalAlignment(SwingConstants.CENTER);
+//        labelQT.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//        labelQT.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+//        panel.add(labelQT);
+//
+//        JLabel labelTKe = new JLabel("Thống kê");
+//        labelTKe.setHorizontalAlignment(SwingConstants.CENTER);
+//        labelTKe.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//        labelTKe.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+//        panel.add(labelTKe);
+//
+//        panel.add(Box.createVerticalStrut(10));
+//        panel.add(Box.createVerticalGlue());
+//
+//        jPanelMenu.add(panel, BorderLayout.CENTER);
 
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         contentPane.add(tabbedPane, BorderLayout.CENTER);
@@ -416,10 +397,10 @@ public class QuanTriView extends JFrame {
         // Phần Nam: Chứa 2 nút "Sửa quyền" và "Lưu quyền"
         JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         southPanel.setBackground(SystemColor.activeCaption);
-        JButton btnNewButton_4 = new JButton("Sửa quyền");
-        btnNewButton_4.setForeground(SystemColor.desktop);
-        btnNewButton_4.setFont(new Font("Times New Roman", Font.BOLD, 16));
-        southPanel.add(btnNewButton_4);
+//        JButton btnNewButton_4 = new JButton("Sửa quyền");
+//        btnNewButton_4.setForeground(SystemColor.desktop);
+//        btnNewButton_4.setFont(new Font("Times New Roman", Font.BOLD, 16));
+//        southPanel.add(btnNewButton_4);
 
         JButton btnNewButton_5 = new JButton("Lưu quyền");
         btnNewButton_5.setForeground(SystemColor.desktop);
@@ -430,226 +411,226 @@ public class QuanTriView extends JFrame {
         
        
 
-        // Kết nối và lấy dữ liệu từ cơ sở dữ liệu
-//        Connection conn = null;
-//        PreparedStatement stmt = null;
-//        ResultSet rs = null;
-//
-//        try {
-//            // Thiết lập kết nối với cơ sở dữ liệu MySQL
-//            String url = "jdbc:mysql://localhost:3306/Nhanvien";
-//            String user = "root";
-//            String password = "thuan12345";
-//            
-//            DriverManager.registerDriver(new Driver());
-//            conn = DriverManager.getConnection(url, user, password);
-//
-//            // Query để lấy dữ liệu từ bảng nhân viên (ví dụ)
-//            String sql = "SELECT * FROM Hg";
-//            stmt = conn.prepareStatement(sql);
-//            rs = stmt.executeQuery();
-//
-//            // Duyệt ResultSet và thêm từng dòng vào model của JTable
-//            while (rs.next()) {
-//                Object[] row = new Object[] {
-//                    rs.getString("manhanvien"),
-//                    rs.getString("tennhanvien"),
-//                    rs.getString("chucvu"),
-//                    rs.getString("sodienthoai"),
-//                    rs.getString("gioitinh"),
-//                    rs.getString("email")
-//                };
-//                model.addRow(row);
-//            }
-//
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        } finally {
-//            // Đóng các đối tượng ResultSet, PreparedStatement và Connection
-//            try {
-//                if (rs != null) rs.close();
-//                if (stmt != null) stmt.close();
-//                if (conn != null) conn.close();
-//            } catch (SQLException ex) {
-//                ex.printStackTrace();
-//            }
-//        }
-//        
-//     // Thông tin kết nối đến MySQL
-//        String url = "jdbc:mysql://localhost:3306/Nhanvien";
-//        String user = "root";
-//        String password = "thuan12345";
-//
-//     // Sự kiện cho nút "Thêm"
-//        btnNewButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                // Lấy dữ liệu từ các trường
-//                String maNV = textField_4.getText();
-//                String tenNV = textField_6.getText();
-//                String chucVu = textField_5.getText();
-//                String soDienThoai = textField_7.getText();
-//                String gioiTinh = (chckbxNewCheckBox.isSelected()) ? "Nam" : "Nữ";
-//                String email = textField_8.getText();
-//                
-//                // Thêm vào bảng (JTable)
-//                DefaultTableModel model = (DefaultTableModel) table.getModel();
-//                model.addRow(new Object[]{maNV, tenNV, chucVu, soDienThoai, gioiTinh, email});
-//                
-//                // Lưu vào cơ sở dữ liệu
-//                Connection conn = null;
-//                PreparedStatement pstmt = null;
-//                try {
-//                    // Kết nối đến cơ sở dữ liệu
-//                    conn = DriverManager.getConnection(url, user, password);
-//                    
-//                    // Câu lệnh SQL để thêm dữ liệu vào bảng nhân viên
-//                    String sql = "INSERT INTO Hg (manhanvien, tennhanvien, chucvu, sodienthoai, gioitinh, email) VALUES (?, ?, ?, ?, ?, ?)";
-//                    
-//                    // Tạo đối tượng PreparedStatement để thực thi câu lệnh SQL
-//                    pstmt = conn.prepareStatement(sql);
-//                    pstmt.setString(1, maNV);
-//                    pstmt.setString(2, tenNV);
-//                    pstmt.setString(3, chucVu);
-//                    pstmt.setString(4, soDienThoai);
-//                    pstmt.setString(5, gioiTinh);
-//                    pstmt.setString(6, email);
-//                    
-//                    // Thực thi câu lệnh
-//                    pstmt.executeUpdate();
-//                    
-//                    // Thông báo thành công (nếu cần)
-//                    JOptionPane.showMessageDialog(QuanTriView.this, "Thêm nhân viên thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-//                    
-//                } catch (SQLException ex) {
-//                    ex.printStackTrace();
-//                    // Xử lý các lỗi kết nối hoặc thao tác với cơ sở dữ liệu
-//                } finally {
-//                    // Đóng các đối tượng PreparedStatement và Connection sau khi sử dụng
-//                    try {
-//                        if (pstmt != null) pstmt.close();
-//                        if (conn != null) conn.close();
-//                    } catch (SQLException ex) {
-//                        ex.printStackTrace();
-//                    }
-//                }
-//                
-//                // Xóa nội dung các trường sau khi thêm thành công
-//                textField_4.setText("");
-//                textField_5.setText("");
-//                textField_6.setText("");
-//                textField_7.setText("");
-//                textField_8.setText("");
-//                chckbxNewCheckBox.setSelected(false);
-//                chckbxNewCheckBox_1.setSelected(false);
-//            }
-//        });
-//        
-//        btnNewButton_1.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                int selectedRow = table.getSelectedRow();
-//                
-//                if (selectedRow == -1) {
-//                    return;
-//                }
-//                
-//                String maNV = (String) table.getValueAt(selectedRow, 0);
-//                
-//                DefaultTableModel model = (DefaultTableModel) table.getModel();
-//                model.removeRow(selectedRow);
-//                
-//                Connection conn = null;
-//                PreparedStatement pstmt = null;
-//                try {
-//                    conn = DriverManager.getConnection(url, user, password);
-//                    
-//                    String sql = "DELETE FROM Hg WHERE manhanvien = ?";
-//                    
-//                    pstmt = conn.prepareStatement(sql);
-//                    pstmt.setString(1, maNV);
-//                    
-//                    int rowsAffected = pstmt.executeUpdate();
-//                    
-//                    if (rowsAffected > 0) {
-//                        // Hiển thị hộp thoại thông báo khi xóa thành công
-//                        JOptionPane.showMessageDialog(QuanTriView.this, "Xóa nhân viên thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-//                    } else {
-//                        JOptionPane.showMessageDialog(QuanTriView.this, "Không thể xóa nhân viên!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//                    }
-//                    
-//                } catch (SQLException ex) {
-//                    ex.printStackTrace();
-//                    JOptionPane.showMessageDialog(QuanTriView.this, "Lỗi khi xóa nhân viên: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-//                } finally {
-//                    try {
-//                        if (pstmt != null) pstmt.close();
-//                        if (conn != null) conn.close();
-//                    } catch (SQLException ex) {
-//                        ex.printStackTrace();
-//                    }
-//                }
-//            }
-//        });
-//        
-//     // Sự kiện cho nút "Tìm"
-//        btnNewButton_2.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                // Lấy mã nhân viên từ textField_9
-//                String maNV = textField_9.getText().trim(); // trim() để loại bỏ khoảng trắng đầu cuối
-//                
-//                // Xóa hết dữ liệu trong bảng (table)
-//                DefaultTableModel model = (DefaultTableModel) table.getModel();
-//                model.setRowCount(0);
-//                
-//                // Kết nối đến cơ sở dữ liệu
-//                Connection conn = null;
-//                PreparedStatement pstmt = null;
-//                try {
-//                    // Thiết lập kết nối đến cơ sở dữ liệu
-//                    conn = DriverManager.getConnection(url, user, password);
-//                    
-//                    // Câu lệnh SQL để tìm kiếm nhân viên theo mã nhân viên
-//                    String sql = "SELECT * FROM Hg WHERE manhanvien = ?";
-//                    
-//                    // Tạo đối tượng PreparedStatement để thực thi câu lệnh SQL
-//                    pstmt = conn.prepareStatement(sql);
-//                    pstmt.setString(1, maNV);
-//                    
-//                    // Thực thi câu lệnh
-//                    ResultSet rs = pstmt.executeQuery();
-//                    
-//                    // Kiểm tra xem có kết quả trả về hay không
-//                    if (!rs.isBeforeFirst()) { // Nếu không có kết quả (rs không trỏ đến dòng trước đầu tiên)
-//                        // Hiển thị hộp thoại thông báo khi không tìm thấy nhân viên
-//                        JOptionPane.showMessageDialog(contentPane, "Không tìm thấy nhân viên có mã " + maNV, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-//                    } else {
-//                        // Hiển thị thông tin nhân viên lên bảng
-//                        while (rs.next()) {
-//                            String maNhanVien = rs.getString("manhanvien");
-//                            String tenNhanVien = rs.getString("tennhanvien");
-//                            String chucVu = rs.getString("chucvu");
-//                            String soDienThoai = rs.getString("sodienthoai");
-//                            String gioiTinh = rs.getString("gioitinh");
-//                            String email = rs.getString("email");
-//                            
-//                            // Thêm thông tin vào bảng (table)
-//                            model.addRow(new Object[]{maNhanVien, tenNhanVien, chucVu, soDienThoai, gioiTinh, email});
-//                        }
-//                    }
-//                    
-//                } catch (SQLException ex) {
-//                    ex.printStackTrace();
-//                    // Xử lý các lỗi kết nối hoặc thực thi câu lệnh SQL
-//                } finally {
-//                    // Đóng các đối tượng PreparedStatement và Connection sau khi sử dụng
-//                    try {
-//                        if (pstmt != null) pstmt.close();
-//                        if (conn != null) conn.close();
-//                    } catch (SQLException ex) {
-//                        ex.printStackTrace();
-//                    }
-//                }
-//            }
-//        });
+//         Kết nối và lấy dữ liệu từ cơ sở dữ liệu
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            // Thiết lập kết nối với cơ sở dữ liệu MySQL
+            String url = "jdbc:mysql://localhost:3306/quanlykhohang";
+            String user = "root";
+            String password = "Nguyenkhao1310";
+            
+            DriverManager.registerDriver(new Driver());
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Query để lấy dữ liệu từ bảng nhân viên (ví dụ)
+            String sql = "SELECT * FROM nhanVien";
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+
+            // Duyệt ResultSet và thêm từng dòng vào model của JTable
+            while (rs.next()) {
+                Object[] row = new Object[] {
+                    rs.getString("maNhanVien"),
+                    rs.getString("tenNhanVien"),
+                    rs.getString("chucVu"),
+                    rs.getString("soDienThoai"),
+                    rs.getString("gioiTinh"),
+                    rs.getString("email")
+                };
+                model.addRow(row);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            // Đóng các đối tượng ResultSet, PreparedStatement và Connection
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        
+     // Thông tin kết nối đến MySQL
+        String url = "jdbc:mysql://localhost:3306/quanlykhohang";
+        String user = "root";
+        String password = "Nguyenkhao1310";
+
+     // Sự kiện cho nút "Thêm"
+        btnNewButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Lấy dữ liệu từ các trường
+                String maNV = textField_4.getText();
+                String tenNV = textField_6.getText();
+                String chucVu = textField_5.getText();
+                String soDienThoai = textField_7.getText();
+                String gioiTinh = (chckbxNewCheckBox.isSelected()) ? "Nam" : "Nữ";
+                String email = textField_8.getText();
+                
+                // Thêm vào bảng (JTable)
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.addRow(new Object[]{maNV, tenNV, chucVu, soDienThoai, gioiTinh, email});
+                
+                // Lưu vào cơ sở dữ liệu
+                Connection conn = null;
+                PreparedStatement pstmt = null;
+                try {
+                    // Kết nối đến cơ sở dữ liệu
+                    conn = DriverManager.getConnection(url, user, password);
+                    
+                    // Câu lệnh SQL để thêm dữ liệu vào bảng nhân viên
+                    String sql = "INSERT INTO nhanvien (MaNhanVien, TenNhanVien, ChucVu, SoDienThoai, GioiTinh, Email) VALUES (?, ?, ?, ?, ?, ?)";
+                    
+                    // Tạo đối tượng PreparedStatement để thực thi câu lệnh SQL
+                    pstmt = conn.prepareStatement(sql);
+                    pstmt.setString(1, maNV);
+                    pstmt.setString(2, tenNV);
+                    pstmt.setString(3, chucVu);
+                    pstmt.setString(4, soDienThoai);
+                    pstmt.setString(5, gioiTinh);
+                    pstmt.setString(6, email);
+                    
+                    // Thực thi câu lệnh
+                    pstmt.executeUpdate();
+                    
+                    // Thông báo thành công (nếu cần)
+                    JOptionPane.showMessageDialog(QuanTriView.this, "Thêm nhân viên thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    // Xử lý các lỗi kết nối hoặc thao tác với cơ sở dữ liệu
+                } finally {
+                    // Đóng các đối tượng PreparedStatement và Connection sau khi sử dụng
+                    try {
+                        if (pstmt != null) pstmt.close();
+                        if (conn != null) conn.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                
+                // Xóa nội dung các trường sau khi thêm thành công
+                textField_4.setText("");
+                textField_5.setText("");
+                textField_6.setText("");
+                textField_7.setText("");
+                textField_8.setText("");
+                chckbxNewCheckBox.setSelected(false);
+                chckbxNewCheckBox_1.setSelected(false);
+            }
+        });
+        
+        btnNewButton_1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                
+                if (selectedRow == -1) {
+                    return;
+                }
+                
+                String maNV = (String) table.getValueAt(selectedRow, 0);
+                
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.removeRow(selectedRow);
+                
+                Connection conn = null;
+                PreparedStatement pstmt = null;
+                try {
+                    conn = DriverManager.getConnection(url, user, password);
+                    
+                    String sql = "DELETE FROM nhanvien WHERE MaNhanVien = ?";
+                    
+                    pstmt = conn.prepareStatement(sql);
+                    pstmt.setString(1, maNV);
+                    
+                    int rowsAffected = pstmt.executeUpdate();
+                    
+                    if (rowsAffected > 0) {
+                        // Hiển thị hộp thoại thông báo khi xóa thành công
+                        JOptionPane.showMessageDialog(QuanTriView.this, "Xóa nhân viên thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(QuanTriView.this, "Không thể xóa nhân viên!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    }
+                    
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(QuanTriView.this, "Lỗi khi xóa nhân viên: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                } finally {
+                    try {
+                        if (pstmt != null) pstmt.close();
+                        if (conn != null) conn.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+        
+     // Sự kiện cho nút "Tìm"
+        btnNewButton_2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Lấy mã nhân viên từ textField_9
+                String maNV = textField_9.getText().trim(); // trim() để loại bỏ khoảng trắng đầu cuối
+                
+                // Xóa hết dữ liệu trong bảng (table)
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.setRowCount(0);
+                
+                // Kết nối đến cơ sở dữ liệu
+                Connection conn = null;
+                PreparedStatement pstmt = null;
+                try {
+                    // Thiết lập kết nối đến cơ sở dữ liệu
+                    conn = DriverManager.getConnection(url, user, password);
+                    
+                    // Câu lệnh SQL để tìm kiếm nhân viên theo mã nhân viên
+                    String sql = "SELECT * FROM nhanvien WHERE MaNhanVien = ?";
+                    
+                    // Tạo đối tượng PreparedStatement để thực thi câu lệnh SQL
+                    pstmt = conn.prepareStatement(sql);
+                    pstmt.setString(1, maNV);
+                    
+                    // Thực thi câu lệnh
+                    ResultSet rs = pstmt.executeQuery();
+                    
+                    // Kiểm tra xem có kết quả trả về hay không
+                    if (!rs.isBeforeFirst()) { // Nếu không có kết quả (rs không trỏ đến dòng trước đầu tiên)
+                        // Hiển thị hộp thoại thông báo khi không tìm thấy nhân viên
+                        JOptionPane.showMessageDialog(contentPane, "Không tìm thấy nhân viên có mã " + maNV, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        // Hiển thị thông tin nhân viên lên bảng
+                        while (rs.next()) {
+                            String maNhanVien = rs.getString("MaNhanVien");
+                            String tenNhanVien = rs.getString("TenNhanVien");
+                            String chucVu = rs.getString("ChucVu");
+                            String soDienThoai = rs.getString("SoDienThoai");
+                            String gioiTinh = rs.getString("GioiTinh");
+                            String email = rs.getString("Email");
+                            
+                            // Thêm thông tin vào bảng (table)
+                            model.addRow(new Object[]{maNhanVien, tenNhanVien, chucVu, soDienThoai, gioiTinh, email});
+                        }
+                    }
+                    
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    // Xử lý các lỗi kết nối hoặc thực thi câu lệnh SQL
+                } finally {
+                    // Đóng các đối tượng PreparedStatement và Connection sau khi sử dụng
+                    try {
+                        if (pstmt != null) pstmt.close();
+                        if (conn != null) conn.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
 
        
        
@@ -676,6 +657,8 @@ public class QuanTriView extends JFrame {
             }
         });
         
+        
+        //Sự kiện cho nút lưu quyền
         btnNewButton_5.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String selectedRole = (String) comboBox.getSelectedItem();
@@ -718,42 +701,6 @@ public class QuanTriView extends JFrame {
         rolePermissionNames.put("Quản lý", initialNames.clone());
         rolePermissionNames.put("Nhân viên", initialNames.clone());
 
-      
-
-        // ... code cho comboBox và btnNewButton_5 (Lưu quyền) như trước
-
-        btnNewButton_4.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String selectedRole = (String) comboBox.getSelectedItem();
-                boolean[] permissions = rolePermissions.get(selectedRole);
-                String[] names = rolePermissionNames.get(selectedRole);
-
-                for (int i = 0; i < checkBoxes.size(); i++) {
-                    if (checkBoxes.get(i).isSelected()) {
-                        String currentName = names[i];
-                        String input = JOptionPane.showInputDialog(QuanTriView.this,
-                            "Nhập tên mới cho quyền " + currentName + ":",
-                            currentName);
-                        
-                        if (input != null && !input.trim().isEmpty()) {
-                            names[i] = input.trim();
-                            permissions[i] = true;
-                            checkBoxes.get(i).setText(input.trim());
-                        }
-                    }
-                }
-
-                // Cập nhật trạng thái checkbox sau khi sửa
-                for (int i = 0; i < checkBoxes.size(); i++) {
-                    checkBoxes.get(i).setSelected(permissions[i]);
-                }
-
-                JOptionPane.showMessageDialog(QuanTriView.this,
-                    "Đã cập nhật quyền cho " + selectedRole,
-                    "Thông báo",
-                    JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
 
         // Thêm ItemListener cho comboBox để cập nhật tên quyền khi chuyển đổi vai trò
         comboBox.addItemListener(new ItemListener() {
@@ -769,7 +716,6 @@ public class QuanTriView extends JFrame {
                 }
             }
         });
-//        setVisible(true);
 //        
     }
 }

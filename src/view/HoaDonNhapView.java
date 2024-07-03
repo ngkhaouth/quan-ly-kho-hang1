@@ -206,7 +206,7 @@ public class HoaDonNhapView extends JFrame {
         mainPanel.add(of.getContentPane(), "DonXuat");
         mainPanel.add(tkview.contentPane, "TonKho");
         mainPanel.add(qtview.contentPane, "QuanTri");
-        mainPanel.add(bcView.getContentPanel(), "ThongKe");
+        mainPanel.add(bcView.frame.getContentPane(), "ThongKe");
         
         contentPane.add(mainPanel, BorderLayout.CENTER);
         

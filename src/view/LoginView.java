@@ -19,7 +19,7 @@ public class LoginView extends JFrame {
         // Thêm ảnh
         JLabel imageLabel = new JLabel("");
         imageLabel.setBounds(157, 0, 100, 100);
-        ImageIcon icon = new ImageIcon("/img/House.png"); // Thay đổi đường dẫn đến ảnh của bạn
+        ImageIcon icon = new ImageIcon("K:\\JavaBasic\\eclipse-workspace\\QuanLyNhapHang\\img\\House.png"); // Thay đổi đường dẫn đến ảnh của bạn
         Image img = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         imageLabel.setIcon(new ImageIcon(img));
         getContentPane().add(imageLabel);
@@ -67,6 +67,7 @@ public class LoginView extends JFrame {
         loginButton.setForeground(new Color(0, 0, 0));
         loginButton.setBackground(Color.ORANGE);
         loginButton.setFont(new Font("Times New Roman", Font.BOLD, 14));
+//        loginButton.setBounds(120, 248, 155, 23);
         loginButton.setBounds(142, 282, 133, 23);
         getContentPane().add(loginButton);
 

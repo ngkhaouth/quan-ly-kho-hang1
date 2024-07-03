@@ -8,7 +8,8 @@ import java.awt.Image;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
+
+
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -29,14 +30,14 @@ import javax.swing.JScrollPane;
 
 import javax.swing.border.EmptyBorder;
 
-//import org.jfree.chart.ChartFactory;
-//import org.jfree.chart.ChartPanel;
-//import org.jfree.chart.JFreeChart;
-//import org.jfree.chart.plot.PlotOrientation;
-//import org.jfree.data.category.DefaultCategoryDataset;
-//
-//import controller.baoCaoChiTietController;
-//import controller.thongKeTongQuatController;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+
+import controller.baoCaoChiTietController;
+import controller.thongKeTongQuatController;
 
 
 import java.awt.Button;
@@ -58,7 +59,7 @@ public class baoCaoView {
 //	private Map< String,Object[][]> dataMapBCCT;
 	private Button buttonDT; 
 	private Button buttonTK;
-//	private ChartPanel chartPanelBCCT;
+	private ChartPanel chartPanelBCCT;
 
     /**
      * Launch the application.
@@ -68,7 +69,7 @@ public class baoCaoView {
             public void run() {
                 try {
                     baoCaoView window = new baoCaoView();
-//                    thongKeTongQuatController controller = new thongKeTongQuatController(window);
+                    thongKeTongQuatController controller = new thongKeTongQuatController(window);
                     window.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -78,10 +79,16 @@ public class baoCaoView {
     }
 
    
+	
+
+
 	protected void setVisible(boolean b) {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
 
 
 	/**
@@ -110,92 +117,92 @@ public class baoCaoView {
         tabbedPane.setBackground(new Color(255, 255, 255));
         frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 
-        RoundedPanel jPanelMenu = new RoundedPanel(50, Color.WHITE);
-        jPanelMenu.setLayout(new BorderLayout(0, 0));
+//        RoundedPanel jPanelMenu = new RoundedPanel(50, Color.WHITE);
+//        jPanelMenu.setLayout(new BorderLayout(0, 0));
 //        frame.getContentPane().add(jPanelMenu, BorderLayout.WEST);
 
 
-        JLabel labelHouse = new JLabel("");
-        labelHouse.setHorizontalAlignment(SwingConstants.CENTER);
+//        JLabel labelHouse = new JLabel("");
+//        labelHouse.setHorizontalAlignment(SwingConstants.CENTER);
 //        Image img = new ImageIcon(this.getClass().getResource("/House.png")).getImage();
 //        labelHouse.setIcon(new ImageIcon(img));
-        jPanelMenu.add(labelHouse);
-        
-        JPanel panel = new JPanel();
-		panel.setOpaque(false);
-
-		
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-		
-		JLabel labelDH = new JLabel("Đơn Hàng");
-		labelDH.setHorizontalAlignment(SwingConstants.CENTER);
-		labelDH.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//        jPanelMenu.add(labelHouse);
+//        
+//        JPanel panel = new JPanel();
+//		panel.setOpaque(false);
+//
+//		
+//		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+//
+//		
+//		JLabel labelDH = new JLabel("Đơn Hàng");
+//		labelDH.setHorizontalAlignment(SwingConstants.CENTER);
+//		labelDH.setFont(new Font("Tahoma", Font.PLAIN, 16));
 //		Image imgDH = new ImageIcon(this.getClass().getResource("/icon_DonHang.png")).getImage();
 //		Image sacledImgDH = imgDH.getScaledInstance(36, 36, Image.SCALE_SMOOTH);
 //		labelDH.setIcon(new ImageIcon(sacledImgDH));
-		labelDH.setBounds(29, 88, 140, 50);
-		panel.add(labelDH);
-		
-		labelDH.setBorder(new EmptyBorder(10, 10, 10, 10));
-		
-		JLabel labelTK = new JLabel("Tồn Kho");
-		labelTK.setHorizontalAlignment(SwingConstants.CENTER);
-		labelTK.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		labelDH.setBounds(29, 88, 140, 50);
+//		panel.add(labelDH);
+//		
+//		labelDH.setBorder(new EmptyBorder(10, 10, 10, 10));
+//		
+//		JLabel labelTK = new JLabel("Tồn Kho");
+//		labelTK.setHorizontalAlignment(SwingConstants.CENTER);
+//		labelTK.setFont(new Font("Tahoma", Font.PLAIN, 16));
 //		Image imgTK = new ImageIcon(this.getClass().getResource("/icon_TonKho.png")).getImage();
 //		Image sacledImgTK = imgTK.getScaledInstance(36, 36, Image.SCALE_SMOOTH);
 //		labelTK.setIcon(new ImageIcon(sacledImgTK));
-		labelTK.setBounds(29, 149, 140, 50);
-		panel.add(labelTK);
-		
-		labelTK.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		
-		JLabel labelNX = new JLabel("Nhập/Xuất");
-		labelNX.setHorizontalAlignment(SwingConstants.CENTER);
-		labelNX.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		labelTK.setBounds(29, 149, 140, 50);
+//		panel.add(labelTK);
+//		
+//		labelTK.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+//		
+//		JLabel labelNX = new JLabel("Nhập/Xuất");
+//		labelNX.setHorizontalAlignment(SwingConstants.CENTER);
+//		labelNX.setFont(new Font("Tahoma", Font.PLAIN, 16));
 //		Image imgNX = new ImageIcon(this.getClass().getResource("/icon_NhapXuat.png")).getImage();
 //		Image sacledImgNX = imgNX.getScaledInstance(36, 36, Image.SCALE_SMOOTH);
 //		labelNX.setIcon(new ImageIcon(sacledImgNX));
-		labelNX.setBounds(29, 197, 140, 50);
-		panel.add(labelNX);
-		
-		labelNX.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		
-		JLabel labelVT = new JLabel("Vị Trí Kho");
-		labelVT.setHorizontalAlignment(SwingConstants.CENTER);
-		labelVT.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		labelNX.setBounds(29, 197, 140, 50);
+//		panel.add(labelNX);
+//		
+//		labelNX.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+//		
+//		JLabel labelVT = new JLabel("Vị Trí Kho");
+//		labelVT.setHorizontalAlignment(SwingConstants.CENTER);
+//		labelVT.setFont(new Font("Tahoma", Font.PLAIN, 16));
 //		Image imgVT = new ImageIcon(this.getClass().getResource("/icon_ViTri.png")).getImage();
 //		Image sacledImgVT = imgVT.getScaledInstance(40, 36, Image.SCALE_SMOOTH);
 //		labelVT.setIcon(new ImageIcon(sacledImgVT));
-		labelVT.setBounds(29, 258, 140, 50);
-		panel.add(labelVT);
-		
-		labelVT.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		
-		JLabel labelQT = new JLabel("Quản Trị");
-		labelQT.setHorizontalAlignment(SwingConstants.CENTER);
-		labelQT.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		labelVT.setBounds(29, 258, 140, 50);
+//		panel.add(labelVT);
+//		
+//		labelVT.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+//		
+//		JLabel labelQT = new JLabel("Quản Trị");
+//		labelQT.setHorizontalAlignment(SwingConstants.CENTER);
+//		labelQT.setFont(new Font("Tahoma", Font.PLAIN, 16));
 //		Image imgQT = new ImageIcon(this.getClass().getResource("/icon_QuanTri.png")).getImage();
 //		Image sacledImgQT = imgQT.getScaledInstance(36, 36, Image.SCALE_SMOOTH);
 //		labelQT.setIcon(new ImageIcon(sacledImgQT));
-		labelQT.setBounds(29, 319, 140, 50);
-		panel.add(labelQT);
-		
-		labelQT.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		
-		JLabel labelTKe = new JLabel("Thống kê");
-		labelTKe.setHorizontalAlignment(SwingConstants.CENTER);
-		labelTKe.setFont(new Font("Tahoma", Font.PLAIN, 16));
+//		labelQT.setBounds(29, 319, 140, 50);
+//		panel.add(labelQT);
+//		
+//		labelQT.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+//		
+//		JLabel labelTKe = new JLabel("Thống kê");
+//		labelTKe.setHorizontalAlignment(SwingConstants.CENTER);
+//		labelTKe.setFont(new Font("Tahoma", Font.PLAIN, 16));
 //		Image imgTKe = new ImageIcon(this.getClass().getResource("/icon_ThongKe.png")).getImage();
 //		Image sacledImgTKe = imgTKe.getScaledInstance(36, 36, Image.SCALE_SMOOTH);
 //		labelTKe.setIcon(new ImageIcon(sacledImgTKe));
-		labelTKe.setBounds(29, 376, 140, 50);
-		panel.add(labelTKe);
-		
-		labelTKe.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		
-		jPanelMenu.add(labelHouse, BorderLayout.NORTH);
-		jPanelMenu.add(panel, BorderLayout.CENTER);
+//		labelTKe.setBounds(29, 376, 140, 50);
+//		panel.add(labelTKe);
+//		
+//		labelTKe.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+//		
+//		jPanelMenu.add(labelHouse, BorderLayout.NORTH);
+//		jPanelMenu.add(panel, BorderLayout.CENTER);
 
         JPanel thongKeTongQuatPanel = new JPanel(new BorderLayout());
         thongKeTongQuatPanel.setBackground(new Color(245, 255, 255));
@@ -214,7 +221,7 @@ public class baoCaoView {
         buttonKH.setFont(new Font("Tahoma", Font.PLAIN, 20));
         labelPanel.add(buttonKH);
 
-        Button buttonNV = new Button("Nhân viên: " + 44);
+        Button buttonNV = new Button("Nhân viên: " + 6);
         buttonNV.setPreferredSize(new Dimension(200, 100));
         buttonNV.setForeground(new Color(255, 255, 255));
         buttonNV.setBackground(new Color(0, 128, 192));
@@ -229,8 +236,8 @@ public class baoCaoView {
         buttonDT.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                thongKeTongQuatController controller = new thongKeTongQuatController(baoCaoView.this);
-//                controller.updateTotalRevenue();
+                thongKeTongQuatController controller = new thongKeTongQuatController(baoCaoView.this);
+                controller.updateTotalRevenue();
             }
         });
         labelPanel.add(buttonDT);
@@ -243,8 +250,8 @@ public class baoCaoView {
         buttonTK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                thongKeTongQuatController controller = new thongKeTongQuatController(baoCaoView.this);
-//                controller.updateTonKho();
+                thongKeTongQuatController controller = new thongKeTongQuatController(baoCaoView.this);
+                controller.updateTonKho();
             }
         });
         labelPanel.add(buttonTK);
@@ -289,8 +296,8 @@ public class baoCaoView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedYear = (String) comboBoxTKTQ.getSelectedItem();
-//                thongKeTongQuatController controllerTKTQ = new thongKeTongQuatController(baoCaoView.this);
-//                controllerTKTQ.updateTableDataTKTQ(selectedYear);
+                thongKeTongQuatController controllerTKTQ = new thongKeTongQuatController(baoCaoView.this);
+                controllerTKTQ.updateTableDataTKTQ(selectedYear);
                
             }
         });
@@ -325,16 +332,16 @@ public class baoCaoView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedYear = (String) comboBoxBCCT.getSelectedItem();
-//                baoCaoChiTietController controllerBCCT = new baoCaoChiTietController(baoCaoView.this);
-//                controllerBCCT.updateTableDataBCCT(selectedYear);
-//                controllerBCCT.updateChart(selectedYear);
+                baoCaoChiTietController controllerBCCT = new baoCaoChiTietController(baoCaoView.this);
+                controllerBCCT.updateTableDataBCCT(selectedYear);
+                controllerBCCT.updateChart(selectedYear);
             }
         });
 
         // tao chart
-//        chartPanelBCCT = new ChartPanel(null);
-//        chartPanelBCCT.setPreferredSize(new Dimension(560, 367));
-//        baoCaoChiTietPanel.add(chartPanelBCCT,BorderLayout.NORTH);
+        chartPanelBCCT = new ChartPanel(null);
+        chartPanelBCCT.setPreferredSize(new Dimension(560, 367));
+        baoCaoChiTietPanel.add(chartPanelBCCT,BorderLayout.NORTH);
         
 
         tabbedPane.addTab("Thống kê tổng quát", thongKeTongQuatPanel);
@@ -373,21 +380,18 @@ public class baoCaoView {
         buttonTK.setLabel("Tồn Kho: " + tongTonKho);
     }
     
-//    public void updateChartBCCT(DefaultCategoryDataset dataset) {
-//        JFreeChart barChart = ChartFactory.createBarChart(
-//            "Báo cáo chi tiết",
-//            "Tháng",
-//            "Giá trị",
-//            dataset,
-//            PlotOrientation.VERTICAL,
-//            true, true, false
-//        );
-//        chartPanelBCCT.setChart(barChart);
-//    }
-//   
-    // Phương thức để lấy content pane
-    public Container getContentPanel() {
-        return frame.getContentPane();
+    public void updateChartBCCT(DefaultCategoryDataset dataset) {
+        JFreeChart barChart = ChartFactory.createBarChart(
+            "Báo cáo chi tiết",
+            "Tháng",
+            "Giá trị",
+            dataset,
+            PlotOrientation.VERTICAL,
+            true, true, false
+        );
+        chartPanelBCCT.setChart(barChart);
     }
+   
+  
 }
    
